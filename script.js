@@ -38,24 +38,33 @@ const randomElement = (array) => {
 	return array[randomIndex];
 }
 
-// Listen for a form submit.
-const form = document.querySelector('form');
-form.addEventListener('submit', e => {
-	e.preventDefault();
-	// Once form submits, grab values from selected radio inputs.
-	const sizeSelected = document.querySelector('input[name=size]:checked').value;
-	const priceSelected = document.querySelector('input[name=price]:checked').value;
+const pizzaProphetInit = () => {
+	const form = document.querySelector('form');
+	form.addEventListener('submit', e => {
+		e.preventDefault();
 
-	console.log(sizeSelected, priceSelected);
-	// use radio input values, to look through pizza object.
-	const sizePizzaList = pizza[sizeSelected];
-	console.log(sizePizzaList);
+		const sizeSelected = document.querySelector('input[name=size]:checked').value;
+		const priceSelected = document.querySelector('input[name=price]:checked').value;
 
-	const withinPricePizzaList = sizePizzaList.filter((pizzaPlace) => pizzaPlace.price === priceSelected);
-	console.log(withinPricePizzaList);
+		const sizePizzaList = pizza[sizeSelected];
 
-	const finalPizzaPlace = randomElement(withinPricePizzaList);
-	console.log("FINAL: ", finalPizzaPlace);
+		const withinPricePizzaList = sizePizzaList.filter((pizzaPlace) => pizzaPlace.price === priceSelected);
 
-})
-// Display the matching pizza joint to user. 
+		const finalPizzaPlace = randomElement(withinPricePizzaList);
+
+		const pizzaHtml = `
+			<h2>Go here ⏩ <span class="restaurant">${finalPizzaPlace.title}</span></h2>
+		`;
+
+		document.querySelector('.results').innerHTML = pizzaHtml;
+	})
+}
+
+// Vanilla JS document ready
+if (document.readyState === 'complete') {
+	// IE 8 support
+	pizzaProphetInit();
+} else {
+	// Other modern browsers
+	document.addEventListener('DOMContentLoaded', pizzaProphetInit);
+}
